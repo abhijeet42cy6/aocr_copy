@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: true
+    host: '0.0.0.0', // Allow external connections
+    open: false // Disable auto-open to avoid xdg-open errors
   },
   optimizeDeps: {
     include: ['gsap', 'gsap/ScrollTrigger'],
