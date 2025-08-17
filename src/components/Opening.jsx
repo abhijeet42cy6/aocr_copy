@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
-import ThreeLinePattern from '@abhijeet42cy6/vector-lines';
+import ThreeLinePattern from './ThreeLinePattern';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
