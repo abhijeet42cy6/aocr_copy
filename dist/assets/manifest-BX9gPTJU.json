@@ -1,0 +1,73 @@
+{
+  "name": "AOCR - Advanced OCR Platform",
+  "short_name": "AOCR",
+  "description": "AI-powered OCR platform with 99.2% accuracy for document processing and data extraction",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/a_OCR.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/a_OCR.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/a_OCR.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/hero.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/herobgmobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Request Access",
+      "short_name": "Access",
+      "description": "Request access to AOCR platform",
+      "url": "/request-access",
+      "icons": [
+        {
+          "src": "/a_OCR.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "short_name": "FAQ",
+      "description": "Frequently Asked Questions",
+      "url": "/#faq",
+      "icons": [
+        {
+          "src": "/a_OCR.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
