@@ -1,0 +1,131 @@
+# AOCR - Advanced OCR Platform Robots.txt
+# This file provides instructions to web crawlers and search engines
+
+# Allow all crawlers
+User-agent: *
+
+# Allow crawling of main pages and content
+Allow: /
+Allow: /index.html
+Allow: /src/
+Allow: /public/
+
+# Allow crawling of important assets
+Allow: /*.svg
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.webp
+Allow: /*.mp4
+Allow: /*.webm
+Allow: /*.css
+Allow: /*.js
+Allow: /*.jsx
+
+# Allow crawling of fonts
+Allow: /*.otf
+Allow: /*.ttf
+Allow: /*.woff
+Allow: /*.woff2
+
+# Disallow crawling of development and build files
+Disallow: /node_modules/
+Disallow: /.venv/
+Disallow: /.git/
+Disallow: /aocr_chatbot/
+Disallow: /*.lock
+Disallow: /*.config.js
+Disallow: /*.config.ts
+Disallow: /*.cjs
+Disallow: /*.mjs
+Disallow: /eslint.config.js
+Disallow: /.eslintrc*
+Disallow: /.prettierrc*
+Disallow: /tsconfig.json
+Disallow: /vite.config.js
+Disallow: /webpack.config.js
+Disallow: /rollup.config.js
+Disallow: /parcel.config.js
+
+# Disallow crawling of source maps and development files
+Disallow: /*.map
+Disallow: /*.d.ts
+Disallow: /src/**/*.test.js
+Disallow: /src/**/*.test.jsx
+Disallow: /src/**/*.spec.js
+Disallow: /src/**/*.spec.jsx
+Disallow: /src/**/*.stories.js
+Disallow: /src/**/*.stories.jsx
+
+# Disallow crawling of temporary and system files
+Disallow: /.DS_Store
+Disallow: /Thumbs.db
+Disallow: /desktop.ini
+Disallow: /*.tmp
+Disallow: /*.temp
+Disallow: /*.log
+Disallow: /*.cache
+
+# Disallow crawling of API endpoints (if any)
+Disallow: /api/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /login/
+Disallow: /register/
+Disallow: /reset-password/
+
+# Disallow crawling of private and sensitive areas
+Disallow: /private/
+Disallow: /internal/
+Disallow: /confidential/
+Disallow: /secret/
+
+# Allow crawling of important content directories
+Allow: /src/components/
+Allow: /public/images/
+Allow: /public/icons/
+Allow: /public/fonts/
+
+# Specific rules for search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Block aggressive crawlers
+User-agent: AhrefsBot
+Disallow: /
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Disallow: /
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+Crawl-delay: 10
+
+User-agent: DotBot
+Disallow: /
+Crawl-delay: 10
+
+# Sitemap location
+Sitemap: https://aocr.in/sitemap.xml
+
+# Host directive - canonical domain
+Host: https://aocr.in
+
+# Crawl-delay for all other bots
+Crawl-delay: 2

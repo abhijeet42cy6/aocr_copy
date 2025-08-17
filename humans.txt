@@ -1,0 +1,13 @@
+/* TEAM */
+    Developer: AOCR Team
+    Contact: info@aocr.in
+    From: India
+
+/* SITE */
+    Last update: 2024/12/19
+    Language: English
+    Doctype: HTML5
+    IDE: VS Code
+    Standards: HTML5, CSS3, JavaScript ES6+
+    Components: React 18, Vite, Framer Motion, GSAP
+    Software: Made with ❤️ in India

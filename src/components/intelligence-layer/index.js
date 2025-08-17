@@ -1,0 +1,9 @@
+export { default as HeaderCard } from './HeaderCard';
+export { default as UniversalDocumentIngestion } from './UniversalDocumentIngestion';
+export { default as MultiLanguageOCR } from './MultiLanguageOCR';
+export { default as HandwrittenTextRecognition } from './HandwrittenTextRecognition';
+export { default as SmartDocumentClassification } from './SmartDocumentClassification';
+export { default as AdvancedTableProcessing } from './AdvancedTableProcessing';
+export { default as ContextAwareAI } from './ContextAwareAI';
+export { default as NaturalLanguageQueries } from './NaturalLanguageQueries';
+export { default as AIPoweredAutomation } from './AIPoweredAutomation'; 
