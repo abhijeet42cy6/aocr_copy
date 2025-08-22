@@ -5,20 +5,28 @@
   position: relative;
   font-family: "Alliance No.2", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow: hidden;
-  padding: 24px 32px;
+  padding: 24px 0px;
 }
 
-.left-section {
+.dot-left-section {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 0px !important;
   min-height: 100%;
 }
-
 .right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Source Code Pro';
+}
+
+.right-section1 {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -50,16 +58,25 @@
   height: 100%;
   pointer-events: all;
 }
-
-.cloud-header {
-  margin-bottom: 20px;
+.cloud-highlights {
+  display: flex
+  ;
+      flex-direction: column;
+  padding-left: 100px;
+}
+@media (max-width: 480px) {
+  .cloud-highlights {
+    padding-top: 60px;
+    align-items: left;
+    padding-left: 0px;
+    gap: 20px;
+  }
 }
 
 .cloud-subheading {
   color: #999;
   font-size: 11px;
   font-weight: 400;
-  padding-left: 100px;
   text-transform: uppercase;
   font-family: 'Source Code Pro';
 }
@@ -68,15 +85,16 @@
   color: #ffffff;
   font-size: 55px;
   font-weight: 300;
-  padding-left: 100px;
   margin: 0;
+  padding-top: 7px;
+  padding-bottom: 7px;
   font-family: 'Source Code Pro';
 }
 
 .cloud-svg {
   position: absolute;
-  top: 70px;
-  left: 40px;
+  top: 120px;
+  left: 0px;
   z-index: 1;
 }
 
@@ -87,32 +105,31 @@
 .cloud-description-text {
   color: #FFF;
   font-size: 12px;
-  padding-left: 100px;
   max-width: 280px;
   margin-top: 10px;
   text-transform: uppercase;
   font-family: 'Source Code Pro';
 }
 
-.features-list {
+.dot-features-list {
   display: flex;
   flex-direction: column;
-  padding-left: 60px;
+  padding-left: 100px;
 }
 
-.feature-item {
+.dot-feature-item {
   display: flex;
   align-items: flex-start;
   gap: 5px;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
 }
 
-.feature-checkmark {
+.dot-feature-checkmark {
   color: #4ade80;
   font-size: 12px;
 }
 
-.feature-item span:not(.feature-checkmark) {
+.dot-feature-item span:not(.dot-feature-checkmark) {
   color: #999;
   font-size: 10px;
   font-weight: 400;
@@ -120,8 +137,71 @@
   font-family: 'Source Code Pro';
 }
 
+/* Percentage.jsx styles */
+.scalability-highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.scalability-label {
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.number-display {
+  font-size: 75px;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: -3px;
+  line-height: 1;
+  padding: 0px;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+
+.description {
+  font-size: 12px;
+  line-height: normal;
+  color: #fff;
+  margin-top: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+  max-width: 280px;
+}
+
+.p-features-list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 60px;
+}
+
+.p-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: 10px;
+  color: #999;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.scalability-svg {
+  position: absolute;
+  top: 110px;
+  left: -80px;
+  z-index: 1;
+}
+
 @media (max-width: 480px) {
-  .features-list {
+  .dot-features-list {
+    display: none !important;
+  }
+  .p-features-list {
     display: none !important;
   }
   .divider {
@@ -142,6 +222,11 @@
     padding-left: 40px !important;
   }
   
+  .right-section1 {
+    padding: 0px !important;
+    display: block !important;
+  }
+  
   .cloud-header {
     position: relative;
   }
@@ -151,7 +236,7 @@
 }  
   .cloud-svg {
     position: absolute;
-    top: 60px;
+    top: 80px;
     left: 0px;
     z-index: 1;
     opacity: 1;
@@ -168,7 +253,22 @@
     position: relative;
     z-index: 2;
     padding-left: 0px !important;
+    padding-bottom: 0px;
+    padding-top: 15px;
     white-space: nowrap;
     font-size: 45px;
+  }
+  
+  .scalability-highlight {
+    padding: 0px !important;
+    padding: 40px !important;
+    width: fit-content !important;
+    margin-left: 0 !important;
+    text-align: left !important;
+  }
+  
+  .scalability-svg {
+    top: 59px;
+    left: 0px;
   }
 }

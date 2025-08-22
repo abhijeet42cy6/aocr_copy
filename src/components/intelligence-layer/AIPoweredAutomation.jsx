@@ -62,15 +62,13 @@ const AI_POWERED_AUTOMATION_STYLES = `
     font-family: "Source Code Pro", monospace;
     font-size: 9px;
     line-height: 1.4;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
     font-weight: 400;
     transition: color 0.3s ease;
   }
 
-  .ai-powered-automation-card:hover .ai-powered-automation-description {
-    color: rgba(255, 255, 255, 0.9);
-  }
+
     .ai-powered-automation-card:hover .ai-powered-automation-svg .inner-rect {
   fill: white;
   transition: fill 0.3s ease;
@@ -104,7 +102,7 @@ export default function AIPoweredAutomation() {
       </div>
       <h3 className="ai-powered-automation-title">AI-POWERED AUTOMATION</h3>
       <p className="ai-powered-automation-description">
-        LEVERAGE <span style={{ color: '#FFF' }}>INTELLIGENT AI AGENTS</span> TO AUTOMATE COMPLEX DOCUMENT WORKFLOWS ACROSS YOUR ENTIRE ORGANIZATION.
+        LEVERAGE <span style={{ color: '#FFF', opacity: 0.8 }}>INTELLIGENT AI AGENTS</span> TO AUTOMATE COMPLEX DOCUMENT WORKFLOWS ACROSS YOUR ENTIRE ORGANIZATION.
       </p>
     </div>
   );

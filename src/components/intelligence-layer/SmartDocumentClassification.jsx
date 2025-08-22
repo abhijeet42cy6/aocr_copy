@@ -70,7 +70,7 @@ const SMART_DOCUMENT_CLASSIFICATION_STYLES = `
     font-family: "Source Code Pro", monospace;
     font-size: 9px;
     line-height: 1.4;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgb(255 255 255 / 45%);
     text-transform: uppercase;
     font-weight: 400;
     transition: color 0.3s ease;
@@ -81,7 +81,7 @@ const SMART_DOCUMENT_CLASSIFICATION_STYLES = `
   transition: fill 0.3s ease;
 }
   .smart-document-classification-card:hover .smart-document-classification-description {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.6);
   }
 `;
 
@@ -107,7 +107,7 @@ export default function SmartDocumentClassification() {
       </div>
       <h3 className="smart-document-classification-title">Advanced Table Processing</h3>
       <p className="smart-document-classification-description">
-        Structure-aware parsing of <span style={{ color: '#FFF' }}>complex, nested, and borderless tables</span> with export to Excel, CSV, or JSON.
+        Structure-aware parsing of <span style={{ color: ' #fff', opacity: 0.7 }}>complex, nested, and borderless tables</span> with export to Excel, CSV, or JSON.
       </p>
     </div>
   );

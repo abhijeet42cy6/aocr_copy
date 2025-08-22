@@ -1,4 +1,4 @@
-#!/Users/abhijeetkumar/Work/A_OCR/aocr_chatbot/aocr_chatbot/venv/bin/python3.11
+#!/Users/arjun/Software/aocr_chatbot/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -59,15 +59,13 @@ const NATURAL_LANGUAGE_QUERIES_STYLES = `
     font-family: "Source Code Pro", monospace;
     font-size: 9px;
     line-height: 1.4;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
     font-weight: 400;
     transition: color 0.3s ease;
   }
 
-  .natural-language-queries-card:hover .natural-language-queries-description {
-    color: rgba(255, 255, 255, 0.9);
-  }
+
 
   .natural-language-queries-svg {
     transition: all 0.3s ease;
@@ -98,7 +96,7 @@ export default function NaturalLanguageQueries() {
       </div>
       <h3 className="natural-language-queries-title">NATURAL LANGUAGE QUERIES</h3>
       <p className="natural-language-queries-description">
-        QUERY YOUR DOCUMENTS USING EVERYDAY LANGUAGE AND GET INSTANT INSIGHTS FROM STRUCTURED OR UNSTRUCTURED DATA.
+        QUERY YOUR DOCUMENTS USING <span style={{ color: ' #fff', opacity: 0.8 }}>EVERYDAY LANGUAGE</span> AND GET INSTANT INSIGHTS FROM STRUCTURED OR UNSTRUCTURED DATA.
       </p>
     </div>
   );

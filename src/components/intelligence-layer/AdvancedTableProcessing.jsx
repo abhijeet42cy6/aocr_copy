@@ -70,14 +70,14 @@ const ADVANCED_TABLE_PROCESSING_STYLES = `
     font-family: "Source Code Pro", monospace;
     font-size: 9px;
     line-height: 1.4;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgb(255 255 255 / 45%);
     text-transform: uppercase;
     font-weight: 400;
     transition: color 0.3s ease;
   }
 
   .advanced-table-processing-card:hover .advanced-table-processing-description {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.6);
   }
 `;
 
@@ -91,7 +91,7 @@ export default function AdvancedTableProcessing() {
       </div>
       <h3 className="advanced-table-processing-title">Multi-Language OCR</h3>
       <p className="advanced-table-processing-description">
-        Supports <span style={{ color: '#FFF' }}>100+ languages</span>  with automatic translation capabilities for global document processing.      </p>
+        Supports <span style={{ color: ' #fff', opacity: 0.7 }}>100+ languages</span>  with automatic translation capabilities for global document processing.      </p>
     </div>
   );
 } 

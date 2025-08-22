@@ -109,14 +109,10 @@ const CONTEXT_AWARE_AI_STYLES = `
     font-family: "Source Code Pro", monospace;
     font-size: 9px;
     line-height: 1.4;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
     font-weight: 400;
     transition: color 0.3s ease;
-  }
-
-  .context-aware-ai-card:hover .context-aware-ai-description {
-    color: rgba(255, 255, 255, 0.9);
   }
 `;
 
@@ -156,7 +152,7 @@ export default function ContextAwareAI() {
       </div>
       <h3 className="context-aware-ai-title">CONTEXT-AWARE AI</h3>
       <p className="context-aware-ai-description">
-        POSITION AWARE ENTITY DETECTION WITH CONTEXTUAL UNDERSTANDING FOR PRECISE DATA EXTRACTION AND VALIDATION.
+        POSITION AWARE ENTITY <span style={{ color: ' #fff', opacity: 0.8 }}>DETECTION WITH CONTEXTUAL UNDERSTANDING </span>FOR PRECISE DATA EXTRACTION AND VALIDATION.
       </p>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Navbar.css'
+import { smoothScrollTo } from '../utils/smoothScroll.js'
 
 function Navbar() {
   const navigate = useNavigate()

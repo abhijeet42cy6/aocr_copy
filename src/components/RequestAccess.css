@@ -20,7 +20,7 @@
   position: relative;
   overflow: hidden;
   border: 1px solid #333;
-  min-height: 70vh;
+  min-height: 552px;
   height: 100%;
 }
 
@@ -91,7 +91,7 @@
 
 .request-access-right-section {
   flex: 1;
-  background-image: url(/bg.png);
+  background-image: url(./bg.png);
   background-size: cover;
   background-position: center;
   display: flex;
@@ -141,7 +141,7 @@
 
 .request-access-layer3 {
   position: absolute;
-  bottom: 5%;
+margin-top: 280px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
@@ -379,7 +379,7 @@
 /* High DPI displays */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .request-access-right-section {
-    background-image: url(/bg.png);
+    background-image: url(./bg.png);
   }
 }
 

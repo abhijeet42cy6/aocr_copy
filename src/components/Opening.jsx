@@ -1,9 +1,9 @@
-import React, { useRef, useState, useCallback } from 'react';
-import ThreeLinePattern from './ThreeLinePattern';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// PinnedWordRevealPage.jsx
+import React, { useRef, useLayoutEffect, useState, useCallback } from "react";
+import ThreeLinePattern from '@abhijeet42cy6/vector-lines';
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 // Helper: distance from point to center of box
@@ -14,7 +14,6 @@ function distanceToBoxCenter(mouse, box) {
 }
 
 // Helper: calculate grid distance between two pattern positions
-// Revert to simpler adjacent pattern logic
 const isAdjacent = (idx1, idx2, gridData) => {
   if (idx1 < 0 || idx2 < 0 || idx1 >= gridData.length || idx2 >= gridData.length) {
     return false;
@@ -29,10 +28,11 @@ const isAdjacent = (idx1, idx2, gridData) => {
   return (colDiff <= 1 && rowDiff === 0) || (colDiff === 0 && rowDiff <= 1);
 };
 
+export default function PinnedWordRevealPage() {
+  const sectionRef = useRef(null);
+  const wordsRef = useRef([]);
 
-
-export default function Opening() {
-  // Do NOT change line angles or lengths - exact from vector_lines
+  // Vector lines configuration - same as Opening.jsx
   const lines = {
     line1: {
       start: { x: 13.5, y: 0 },
@@ -48,15 +48,15 @@ export default function Opening() {
     }
   };
 
-  // Pattern grid constants
+  // Pattern grid constants - same as Opening.jsx
   const ROWS = 6;
   const COLS = 24;
   const BOX_W = 27;
   const BOX_H = 26;
-  const H_GAP = 27; // from .hard-row gap
-  const V_GAP = 32; // from .hard-grid gap
+  const H_GAP = 27;
+  const V_GAP = 32;
 
-  // Hidden indices per row
+  // Hidden indices per row - same as Opening.jsx
   const hiddenMap = [
     [7, 16, 19],
     [1, 5, 14, 21],
@@ -139,7 +139,7 @@ export default function Opening() {
   };
   const handleMouseLeaveBottom = () => setHoverIdxBottom(null);
 
-  // Style for a SINGLE pattern box (27×26) without repeating
+  // Style for a SINGLE pattern box
   const singlePatternStyle = {
     position: 'relative',
     width: '27px',
@@ -147,61 +147,52 @@ export default function Opening() {
     backgroundRepeat: 'no-repeat',
     backgroundSize: '27px 26px',
     backgroundPosition: 'center',
-    opacity: 0.15, // default
+    opacity: 0.15,
     transition: 'opacity 0.3s ease-out, filter 0.3s ease-out',
     cursor: 'pointer',
   };
 
-  // Animation for main text
-  const textSectionRef = useRef(null);
+  // Your sentence (edit freely)
+  const sentence =
+    "The foundation of AI automation—transforming unstructured documents into machine-actionable data across your enterprise.";
 
-  React.useEffect(() => {
-    const words = gsap.utils.toArray('.gsap-word');
-    if (!words.length) return;
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // collect word nodes
+      const words = wordsRef.current.filter(Boolean);
+      if (!words.length) return;
 
-    // Mobile detection for responsive animation
-    const isMobile = window.innerWidth <= 768;
+      // ensure starting state (no movement, only opacity)
+      gsap.set(words, { opacity: 0.1 });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: textSectionRef.current,
-        start: 'top 70%', // Start earlier
-        end: 'top 30%', // End much sooner - tight control
-        scrub: 0.5, // More responsive
-        markers: false, // Set to true for debugging
-        invalidateOnRefresh: true,
-      }
-    });
-
-    // Animate words with much tighter timing
-    tl.fromTo(words,
-      {
-        opacity: 0,
-        y: 20, // Reduced movement
-        rotation: 1, // Subtle rotation
-        scale: 0.98 // Subtle scale
-      },
-      {
+      // timeline that fades words in with stagger (no y/scale/rotation)
+      const tl = gsap.timeline().to(words, {
         opacity: 1,
-        y: 0,
-        rotation: 0,
-        scale: 1,
-        stagger: isMobile ? 0.02 : 0.03, // Much faster stagger
-        duration: 0.4, // Shorter duration
-        ease: 'power2.out',
-        onStart: () => {
-          words.forEach(word => word.classList.add('animating'));
-        },
-        onComplete: () => {
-          words.forEach(word => word.classList.remove('animating'));
-        }
-      }
-    );
+        stagger: 0.22,           // reveal gap between words
+        duration: 0.4,           // fade duration per word
+        ease: "power1.out",
+      });
 
-    return () => {
-      if (tl.scrollTrigger) tl.scrollTrigger.kill();
-      tl.kill();
-    };
+      // pin the section for the whole animation,
+      // and scrub so opacity follows scroll
+      const st = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        animation: tl,
+        start: "top top",
+        end: "+=" + words.length * 50, // pin length based on word count
+        pin: true,          // lock the screen to this section
+        scrub: true,        // tie progress to scroll for smoothness
+        markers: false,
+        anticipatePin: 1,
+      });
+
+      return () => {
+        st.kill();
+        tl.kill();
+      };
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   // Render top rows
@@ -244,7 +235,7 @@ export default function Opening() {
       }
     }
     rowsTop.push(
-      <div className="hard-row" key={row}>
+      <div className="hard-row-openingO" key={row}>
         {cols}
       </div>
     );
@@ -290,69 +281,140 @@ export default function Opening() {
       }
     }
     rowsBottom.push(
-      <div className="hard-row" key={row}>
+      <div className="hard-row-openingO" key={row}>
         {cols}
       </div>
     );
   }
 
   return (
-    <>
-      <div className="opening-container">
-        <div
-          className="hard-grid top-grid"
-          ref={gridTopRef}
-          onMouseMove={handleMouseMoveTop}
-          onMouseLeave={handleMouseLeaveTop}
-          style={{ userSelect: 'none' }}
-        >
-          {rowsTop}
-        </div>
+    <div ref={sectionRef} className="page-openingO">
+      <style>{`
+        /* Page base - unique to OpeningO */
+        .page-openingO {
+          min-height: 100vh;
+          background: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 6vh 5vw;
+          box-sizing: border-box;
+          position: relative;
+        }
 
-        <div className="text-section" ref={textSectionRef}>
-          <h1 className="main-text">
-            <div className="reveal-line">
-              <span className="gsap-word opening-text-grey">The</span>{' '}
-              <span className="gsap-word opening-text-grey">foundation</span>{' '}
-              <span className="gsap-word opening-text-grey">of</span>{' '}
-              <span className="gsap-word opening-text-grey">AI</span>{' '}
-              <span className="gsap-word opening-text-grey">automation—</span>
-            </div>
-            <div className="reveal-line">
-              <span className="gsap-word opening-text-grey">transforming</span>{' '}
-              <span className="gsap-word highlight-text">unstructured</span>{' '}
-              <span className="gsap-word highlight-text">documents</span>{' '}
-              <span className="gsap-word highlight-text">into</span>{' '}
-              <span className="gsap-word highlight-text">machine-actionable</span>{' '}
-              <span className="gsap-word highlight-text">data</span>{' '}
-              <span className="gsap-word">across</span>
-            </div>
-            <div className="reveal-line">
-              <span className="gsap-word">your</span>{' '}
-              <span className="gsap-word">enterprise.</span>
-            </div>
-          </h1>
-        </div>
+        /* Text box */
+        .hero-wrap-openingO {
+          max-width: 1100px;
+          width: 100%;
+          position: relative;
+          z-index: 10;
+        }
 
-        <div
-          className="hard-grid bottom-grid"
-          ref={gridBottomRef}
-          onMouseMove={handleMouseMoveBottom}
-          onMouseLeave={handleMouseLeaveBottom}
-          style={{ userSelect: 'none' }}
-        >
-          {rowsBottom}
-        </div>
+        .headline-openingO {
+          margin: 0;
+          font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+            Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+            "Segoe UI Emoji";
+          font-size: 44px;
+          line-height: 1.3;
+          color: #333333;
+          font-weight: 400;
+          text-align: center;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
 
-        <div className="scroll-indicator">
-          <span>SCROLL DOWN</span>
-        </div>
+        /* Keep words inline but targetable */
+        .headline-openingO .word {
+          display: inline-block;
+          opacity: 0;
+          will-change: opacity;
+          margin-right: 10px;
+        }
+
+        /* Optional subtle color accents */
+        .muted-openingO { color:rgba(75, 85, 99, 0.61); }
+        .highlight-openingO { color: #4169e1; }
+
+        /* Vector grid styling - unique to OpeningO */
+        .hard-grid-openingO {
+          margin: 0 53px 0 53px;
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          pointer-events: none;
+        }
+
+        .top-grid-openingO {
+          margin-top: 70px; /* Pushed down by 20px from 35px */
+        }
+
+        .bottom-grid-openingO {
+          margin-top: 650px; /* Pushed down by 50px from 350px */
+          margin-bottom: 35px;
+        }
+
+        .hard-row-openingO {
+          display: flex;
+          gap: 27px;
+          justify-content: center;
+          pointer-events: auto;
+        }
+
+        /* Ensure text is above the grid */
+        .hero-wrap-openingO {
+          z-index: 20;
+        }
+      `}</style>
+
+      {/* Vector Lines Grid - Top */}
+      <div
+        className="hard-grid-openingO top-grid-openingO"
+        ref={gridTopRef}
+        onMouseMove={handleMouseMoveTop}
+        onMouseLeave={handleMouseLeaveTop}
+        style={{ userSelect: 'none' }}
+      >
+        {rowsTop}
       </div>
-      <div className="opening-container-mobile">
-        <div className="hard-grid top-grid">
-          {rowsTop}
-        </div>
+
+      {/* Vector Lines Grid - Bottom */}
+      <div
+        className="hard-grid-openingO bottom-grid-openingO"
+        ref={gridBottomRef}
+        onMouseMove={handleMouseMoveBottom}
+        onMouseLeave={handleMouseLeaveBottom}
+        style={{ userSelect: 'none' }}
+      >
+        {rowsBottom}
       </div>
-    </>
+
+      <div className="hero-wrap-openingO">
+        <h1 className="headline-openingO" aria-label={sentence}>
+          {sentence.split(" ").map((w, i) => (
+            <span
+              key={i}
+              className={`word${
+                // simple example: tint a few words if you like (optional)
+                [" foundation ", "automation—", "unstructured", "documents", "machine-actionable", "data","into"].includes(
+                  w.replace(/[^\w-—]/g, "")
+                )
+                  ? " highlight-openingO"
+                  : ""
+                }`}
+              ref={(el) => (wordsRef.current[i] = el)}
+            >
+              {w}
+              {i < sentence.split(" ").length - 1 ? " " : ""}
+            </span>
+          ))}
+        </h1>
+      </div>
+    </div>
   );
-} 
+}

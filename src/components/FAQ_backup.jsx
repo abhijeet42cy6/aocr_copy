@@ -788,7 +788,10 @@ const AnimatedFAQDiagram = () => {
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        overflow: 'hidden'
+                                        overflow: 'auto',
+                                        overscrollBehavior: 'contain' /* prevents scroll chaining */
+
+                                        
                                     }}>
                                         {boxes.map((box, index) => {
                                             const isFocused = focusedBox === box.id;
@@ -1175,7 +1178,7 @@ const AnimatedFAQDiagram = () => {
                                                             damping: 30,
                                                             duration: 0.4
                                                         }}
-                                                        whileHover={{ scale: 1.02 }}
+                                                        whileHover={{ borderLeft: '4px solid white', transition: { duration: 0.15 } }}
                                                         whileTap={{ borderLeft: '4px solid white', transition: { duration: 0.15 } }}
                                                         onClick={() => handleQuestionClick(question)}
                                                     >

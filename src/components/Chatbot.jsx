@@ -145,17 +145,9 @@ const Chatbot = () => {
             setTimeout(() => {
                 const chatbotElement = document.querySelector('.chatbot-container');
                 if (chatbotElement) {
-                    chatbotElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center',
-                        inline: 'center'
+                    import('../utils/smoothScroll.js').then(({ smoothScrollTo }) => {
+                        smoothScrollTo(chatbotElement, { duration: 800, align: 'center' });
                     });
-
-                    // Add a subtle highlight effect
-                    chatbotElement.style.boxShadow = '0 0 20px rgba(0, 255, 0, 0.3)';
-                    setTimeout(() => {
-                        chatbotElement.style.boxShadow = '';
-                    }, 2000);
                 }
             }, 300);
         };

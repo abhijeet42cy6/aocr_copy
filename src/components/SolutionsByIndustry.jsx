@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import gsap from 'gsap';
 
 // Custom hook for typewriter effect with intersection observer
 const useTypewriter = (text, speed = 50, delay = 2000, dependency = null, shouldStart = false) => {
@@ -82,7 +83,7 @@ body {
 }
 
 .solutions-description {
-  margin: 50px 0 0 25px;
+  margin: 50px 0 0 10px;
   font-size: 15.5px;
   line-height: 1.4;
   color: #444;
@@ -707,7 +708,7 @@ export default function SolutionsByIndustry() {
     };
   }, []);
 
-  // Title animation effect (simplified for mobile)
+  // Title animation effect: GSAP blinking sequence (ported from Pipeline.jsx)
   useEffect(() => {
     const allElements = Object.values(titleWordRefs).map(ref => ref.current);
     if (!allElements.every(el => el)) return;
@@ -715,29 +716,47 @@ export default function SolutionsByIndustry() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Simplified animation for mobile - just fade in
-          allElements.forEach((el, index) => {
-            setTimeout(() => {
-              if (el) {
-                el.style.opacity = '1';
-                el.style.transition = 'opacity 0.5s ease';
-              }
-            }, index * 200);
-          });
-          observer.unobserve(entry.target);
+          startBlinkAnimation(allElements);
+          observer.unobserve(entry.target); // trigger once
         }
       });
     }, { threshold: 0.5 });
 
-    // Set initial state
-    allElements.forEach(el => {
-      if (el) el.style.opacity = '0';
-    });
-
     observer.observe(allElements[0]);
-
     return () => observer.disconnect();
   }, []);
+
+  const startBlinkAnimation = (allElements) => {
+    // Initial setup - all invisible
+    gsap.set(allElements, {
+      opacity: 0,
+      filter: 'brightness(1)',
+      textShadow: '0 0 0 rgba(0,0,0,0)'
+    });
+
+    const mainTimeline = gsap.timeline();
+
+    const blinkElement = (target, intensity, numBlinks) => {
+      const sequence = gsap.timeline();
+      for (let i = 0; i < numBlinks; i++) {
+        sequence
+          .to(target, { opacity: 0, duration: 0.09, ease: 'steps(1)' })
+          .to(target, { opacity: 1, filter: `brightness(${intensity})`, duration: 0.02, ease: 'steps(1)' });
+      }
+      return sequence;
+    };
+
+    // Ensure hidden initially
+    gsap.set(allElements, { opacity: 0 });
+
+    // Animate words sequentially similar to Pipeline.jsx
+    mainTimeline.add(() => { blinkElement(titleWordRefs.Solutions.current, 1.7, 4); });
+    mainTimeline.add(() => { blinkElement(titleWordRefs.by.current, 1.5, 5); }, '+=0.15');
+    mainTimeline.add(() => { blinkElement(titleWordRefs.Industry.current, 1.3, 4); }, '+=0.15');
+
+    // Final state
+    mainTimeline.to(allElements, { opacity: 1, filter: 'brightness(1)', duration: 0.05 }, '+=0.1');
+  };
 
   const currentData = industryData[activeIndustry];
   const currentIndustryNumber = industries.find(ind => ind.name === activeIndustry)?.number || '01';

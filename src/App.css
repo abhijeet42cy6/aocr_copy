@@ -256,7 +256,6 @@ display: none;
   border-top: 1px solid #a8a8a8;
 }
 
-/* Removed duplicate scroll styles */
 
 .info-label {
   font-size: 10px;
@@ -271,6 +270,12 @@ display: none;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: #ffffff;
+}
+.hero-video-bg::-webkit-media-controls {
+  display: none !important;
+}
+.hero-video-bg::-webkit-media-controls-start-playback-button {
+  display: none !important;
 }
 
 @media (max-width: 768px) {
@@ -399,8 +404,9 @@ display: none;
 }
 
 .bottom-grid {
-  margin-top: 350px;
-  margin-bottom: 45px;  /* Adjusted to better align with scroll indicator */
+  margin-top: 350px; 
+  margin-bottom: 35px;              /* Slightly adjusted top margin */
+  /* Adjusted to match Figma spacing */
 }
 
 .hard-row {
@@ -442,7 +448,6 @@ display: none;
   color: #4169e1;  /* This blue color matches Figma perfectly */
   font-weight: 400;  /* Adding underline to match Figma */
 }
-
 .scroll-indicator {
   position: absolute;
   bottom: 13%;  /* Adjusted position to align with vector line gap */

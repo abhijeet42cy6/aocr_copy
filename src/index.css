@@ -72,9 +72,8 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Disable native smooth scroll for Lenis */
   scroll-padding-top: 80px; /* Account for fixed navbar */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 body {
@@ -84,25 +83,31 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
   overflow-x: hidden; /* Prevent horizontal scroll */
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Disable native smooth scroll for Lenis */
 }
 
-/* Enhanced smooth scrolling for all scrollable elements */
-html, body {
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+/* Optimize for Lenis smooth scrolling */
+html.lenis {
+  height: auto;
 }
 
-/* Smooth scrolling for all scrollable containers */
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Disable native smooth scrolling completely for Lenis */
 * {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
-/* Ensure smooth scrolling works for all anchor links */
+/* Disable native smooth scrolling for anchor links */
 a[href^="#"] {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 code {
@@ -189,5 +194,6 @@ code {
   font-optical-sizing: auto;
   font-weight: 900;
   font-style: normal;
-} 
+}
+
 

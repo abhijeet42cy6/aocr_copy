@@ -85,6 +85,7 @@ function Hero() {
           muted
           loop
           playsInline
+          webkit-playsinline="true"
         >
           <source src="/herobg.mp4" type="video/mp4" />
         </video>
