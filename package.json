@@ -10,7 +10,6 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@abhijeet42cy6/vector-lines": "^1.0.0",
     "@gsap/react": "^2.1.2",
     "@studio-freight/lenis": "^1.0.42",
     "framer-motion": "^12.23.12",
