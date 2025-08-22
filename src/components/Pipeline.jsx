@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import './Pipelinep.css'
+import './Pipeline.css'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const Pipeline = () => {
