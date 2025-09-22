@@ -1,329 +1,142 @@
-# Company Chatbot API
+# A_OCR Chatbot - Cloudflare Workers
 
-A secure, page-aware FastAPI-based chatbot that uses Google's Gemini AI API, designed specifically for company customer service with contextual responses based on the current page.
+A serverless chatbot API built for Cloudflare Workers, powered by Google Gemini AI.
 
 ## Features
 
-- **Secure API Integration**: Uses Gemini 2.0 Flash model with proper API key management
-- **Page-Aware Responses**: Dynamic prompts based on current page context
-- **Rate Limiting**: Prevents abuse with configurable request limits
-- **Input Validation**: Sanitizes and validates all user inputs
-- **CORS Protection**: Configurable allowed origins
-- **Company-Focused**: Chatbot is restricted to company-related topics only
-- **Logging**: Comprehensive logging for monitoring and debugging
+- ✅ **100,000 requests/day free** on Cloudflare Workers
+- ✅ **Global edge deployment** for fast responses worldwide
+- ✅ **Same AI responses** with your exact prompt engineering
+- ✅ **No server management** - fully serverless
+- ✅ **Automatic scaling** based on demand
+- ✅ **Rate limiting** and security features
+- ✅ **Page-specific responses** for different website sections
 
-## Security Features
+## Quick Start
 
-- Environment variable management for sensitive data
-- Rate limiting per IP address
-- Input sanitization and validation
-- CORS middleware with restricted origins
-- Request logging (without sensitive data)
-- Error handling without information leakage
-
-## Setup
-
-1. Install dependencies:
+### 1. Setup
 ```bash
-pip install -r requirements.txt
+# Run the setup script (choose one)
+# For Linux/Mac:
+./setup-deployment.sh
+
+# For Windows PowerShell:
+.\setup-deployment.ps1
 ```
 
-2. Configure your environment variables in `.env`:
-   - Update `GEMINI_API_KEY` with your actual API key
-   - Set `ALLOWED_ORIGINS` for your frontend domains
-   - Adjust rate limiting and security settings as needed
-
-3. **IMPORTANT**: Customize the prompts in `main.py`:
-   - Find the "COMPANY PROMPT SECTION" (lines 75-105) for main company information
-   - Find the "PAGE-SPECIFIC PROMPTS" section (lines 107-180) for page contexts
-   - Replace all placeholder text with your actual company information
-   - Update company name, services, mission, values, and contact details
-   - Customize page-specific prompts to match your website structure
-
-4. Run the application:
+### 2. Test Locally
 ```bash
-python main.py
+npm run dev
 ```
 
-Or with uvicorn:
+### 3. Deploy
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+# Deploy to staging
+npm run deploy:staging
+
+# Deploy to production
+npm run deploy:production
+```
+
+### 4. Test Deployment
+```bash
+# Test your deployed chatbot
+node test-deployment.js https://your-worker-url.workers.dev
 ```
 
 ## API Endpoints
 
-### POST /chat
-Send a message to the chatbot with optional page context.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | Health check |
+| GET | `/health` | Detailed health check |
+| GET | `/pages` | Available page contexts |
+| POST | `/chat` | Main chat endpoint |
 
-**Request Body:**
-```json
-{
-  "message": "Hello, what services do you offer?",
-  "page_id": "services"
-}
-```
+### Chat API Usage
 
-**Response:**
-```json
-{
-  "response": "Hello! Welcome to [Company Name]...",
-  "timestamp": "2024-01-01T12:00:00"
-}
-```
-
-### GET /pages
-Get list of available page contexts.
-
-**Response:**
-```json
-{
-  "available_pages": ["home", "services", "about", "contact", "pricing", "support", "products", "default"],
-  "description": "Send page_id in chat requests to get page-specific responses"
-}
-```
-
-### GET /health
-Health check endpoint.
-
-### GET /
-Basic status endpoint.
-
-## Environment Variables
-
-- `GEMINI_API_KEY`: Your Google Gemini API key (required)
-- `ALLOWED_ORIGINS`: Comma-separated list of allowed CORS origins
-- `MAX_MESSAGE_LENGTH`: Maximum length of chat messages (default: 1000)
-- `RATE_LIMIT_REQUESTS`: Number of requests allowed per window (default: 10)
-- `RATE_LIMIT_WINDOW`: Rate limit window in seconds (default: 60)
-
-## Customization
-
-### Main Company Prompt
-The main chatbot prompt is in the `COMPANY_SYSTEM_PROMPT` variable in `main.py`. Update this with:
-- Your company name and industry
-- Services and products offered
-- Company mission and values
-- Contact information
-- Any specific conversation guidelines
-
-### Page-Specific Prompts
-The `PAGE_SPECIFIC_PROMPTS` dictionary contains context for different pages:
-- **home**: Homepage context and general company info
-- **services**: Service-focused responses
-- **about**: Company background and team info
-- **contact**: Contact information and communication
-- **pricing**: Pricing and package information
-- **support**: Help and troubleshooting focus
-- **products**: Product-specific information
-- **default**: Fallback for unknown pages
-
-Add or modify page prompts to match your website structure.
-
-### Page ID Mapping
-The system automatically handles common page variations:
-- `index` or empty string → `home`
-- `service` → `services`
-- `product` → `products`
-- `help` or `faq` → `support`
-- `contact-us` → `contact`
-- `about-us` or `team` → `about`
-
-You can add more mappings in the `get_page_prompt()` function.
-
-## Testing
-
-Test the API using curl:
-
-**Basic chat without page context:**
-```bash
-curl -X POST "http://localhost:8000/chat" \
-  -H "Content-Type: application/json" \
-  -d '{"message": "What services do you offer?"}'
-```
-
-**Chat with page context:**
-```bash
-curl -X POST "http://localhost:8000/chat" \
-  -H "Content-Type: application/json" \
-  -d '{"message": "What services do you offer?", "page_id": "services"}'
-```
-
-**Get available pages:**
-```bash
-curl -X GET "http://localhost:8000/pages"
-```
-
-## Frontend Integration
-
-### JavaScript Example
 ```javascript
-class ChatbotClient {
-  constructor(apiUrl = 'http://localhost:8000') {
-    this.apiUrl = apiUrl;
-  }
-
-  // Get current page from URL
-  getCurrentPage() {
-    const path = window.location.pathname;
-    return path.split('/')[1] || 'home';
-  }
-
-  // Send message with page context
-  async sendMessage(message) {
-    const response = await fetch(`${this.apiUrl}/chat`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: message,
-        page_id: this.getCurrentPage()
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return await response.json();
-  }
-
-  // Get available page contexts
-  async getAvailablePages() {
-    const response = await fetch(`${this.apiUrl}/pages`);
-    return await response.json();
-  }
-}
-
-// Usage
-const chatbot = new ChatbotClient();
-
-// Send a message
-chatbot.sendMessage("What services do you offer?")
-  .then(response => {
-    console.log('Bot response:', response.response);
+// Example request
+const response = await fetch('https://your-worker.workers.dev/chat', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    message: 'Hello, I need help with OCR services',
+    page_id: 'home' // optional
   })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+});
+
+const data = await response.json();
+console.log(data.response); // AI response
 ```
 
-### React Hook Example
-```javascript
-import { useState, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+## Configuration
 
-export const useChatbot = (apiUrl = 'http://localhost:8000') => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const location = useLocation();
+### Environment Variables
+- `GEMINI_API_KEY` - Your Google Gemini API key (required)
+- `ALLOWED_ORIGINS` - Comma-separated allowed origins (optional)
+- `MAX_MESSAGE_LENGTH` - Max message length (default: 1000)
+- `RATE_LIMIT_REQUESTS` - Requests per window (default: 10)
+- `RATE_LIMIT_WINDOW` - Rate limit window in seconds (default: 60)
 
-  const getCurrentPage = useCallback(() => {
-    return location.pathname.split('/')[1] || 'home';
-  }, [location.pathname]);
+### Page Contexts
+- `home` - Homepage
+- `services` - Services page
+- `about` - About us page
+- `contact` - Contact page
+- `pricing` - Pricing page
+- `support` - Support/Help page
+- `products` - Products page
+- `default` - General pages
 
-  const sendMessage = useCallback(async (message) => {
-    setLoading(true);
-    setError(null);
+## Development
 
-    try {
-      const response = await fetch(`${apiUrl}/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: message,
-          page_id: getCurrentPage()
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (err) {
-      setError(err.message);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [apiUrl, getCurrentPage]);
-
-  return { sendMessage, loading, error, currentPage: getCurrentPage() };
-};
-```
-
-## How Page-Aware Responses Work
-
-1. **Frontend sends page context**: Your website includes the current page ID in chat requests
-2. **Dynamic prompt construction**: The system combines:
-   - Main company system prompt (core guidelines and company info)
-   - Page-specific context prompt (relevant to current page)
-   - User's message
-3. **Contextual AI response**: Gemini generates responses tailored to the page context
-
-### Example Response Differences
-
-**On Services Page:**
-- User: "How much does this cost?"
-- Bot: "Our service pricing varies by package. We offer three main tiers: Basic ($X/month), Professional ($Y/month), and Enterprise ($Z/month). Each includes..."
-
-**On Support Page:**
-- User: "How much does this cost?"
-- Bot: "Our support services are included with all paid plans. For additional premium support options, we offer..."
-
-## Production Deployment
-
-For production:
-
-1. **Security**:
-   - Use a proper secret management system for API keys
-   - Set up HTTPS with SSL certificates
-   - Configure proper CORS origins for your domain
-   - Implement additional authentication if needed
-
-2. **Infrastructure**:
-   - Configure a reverse proxy (nginx/Apache)
-   - Set up proper rate limiting at the infrastructure level
-   - Use a production WSGI server (gunicorn with uvicorn workers)
-   - Set up health checks and monitoring
-
-3. **Monitoring**:
-   - Set up proper logging and monitoring
-   - Monitor API usage and costs
-   - Track response times and error rates
-   - Monitor rate limiting effectiveness
-
-4. **Scaling**:
-   - Consider using Redis for rate limiting storage in multi-instance deployments
-   - Implement caching for frequently accessed page prompts
-   - Monitor Gemini API quotas and implement fallback responses
-
-### Production Environment Variables
+### Local Development
 ```bash
-# Production .env example
-GEMINI_API_KEY=your_production_api_key
-ALLOWED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
-MAX_MESSAGE_LENGTH=1000
-RATE_LIMIT_REQUESTS=20
-RATE_LIMIT_WINDOW=60
+npm run dev
 ```
 
-### Docker Deployment
-```dockerfile
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-EXPOSE 8000
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+### View Logs
+```bash
+npm run tail
 ```
+
+### Update Secrets
+```bash
+npm run secret:put
+```
+
+## Files Structure
+
+```
+aocr_chatbot/
+├── src/
+│   └── index.js          # Main Cloudflare Worker code
+├── wrangler.toml         # Wrangler configuration
+├── package.json          # Dependencies and scripts
+├── deploy.md             # Detailed deployment guide
+├── setup-deployment.sh   # Linux/Mac setup script
+├── setup-deployment.ps1  # Windows PowerShell setup script
+├── test-deployment.js    # Test script
+└── README.md            # This file
+```
+
+## Cost
+
+- **Cloudflare Workers**: 100,000 requests/day free
+- **Gemini API**: Pay per token usage
+- **KV Storage**: Minimal cost for rate limiting
+- **No server costs** or maintenance
+
+## Support
+
+For issues or questions:
+- Check `deploy.md` for detailed setup instructions
+- Review Cloudflare Workers documentation
+- Contact: team@aocr.in
+
+## License
+
+MIT License - see LICENSE file for details

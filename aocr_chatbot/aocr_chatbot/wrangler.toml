@@ -1,0 +1,22 @@
+name = "aocr-chatbot"
+main = "src/index.js"
+compatibility_date = "2024-01-15"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production]
+name = "aocr-chatbot"
+
+[env.staging]
+name = "aocr-chatbot-staging"
+
+# Environment variables (set via wrangler secret put)
+# GEMINI_API_KEY - Your Gemini API key
+# ALLOWED_ORIGINS - Comma-separated list of allowed origins
+# MAX_MESSAGE_LENGTH - Maximum message length (default: 1000)
+# RATE_LIMIT_REQUESTS - Rate limit requests per window (default: 10)
+# RATE_LIMIT_WINDOW - Rate limit window in seconds (default: 60)
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT_STORAGE"
+id = "your-kv-namespace-id"
+preview_id = "your-preview-kv-namespace-id"
