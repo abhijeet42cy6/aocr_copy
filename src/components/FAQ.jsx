@@ -239,7 +239,7 @@ const FAQ = () => {
           display: flex;
           flex-direction: column;
           gap: 8px;
-          overflow-y: hidden !important;
+          overflow: hidden;
         }
 
         .category-item {
@@ -270,7 +270,7 @@ const FAQ = () => {
           height: 100%;
           background-color: #000;
           padding: 10px 15px;
-          overflow-y: auto;
+          overflow: hidden;
           display: flex;
           flex-direction: column;
           gap: 8px;
@@ -282,22 +282,6 @@ const FAQ = () => {
           min-height: 500px;
         }
 
-        .questions-panel::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        .questions-panel::-webkit-scrollbar-track {
-          background: #000;
-        }
-
-        .questions-panel::-webkit-scrollbar-thumb {
-          background: #666;
-          border-radius: 4px;
-        }
-
-        .questions-panel::-webkit-scrollbar-thumb:hover {
-          background: #888;
-        }
 
         .question-item {
           border: 1px solid #444;

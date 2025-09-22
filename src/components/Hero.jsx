@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 
-function Hero() {
+function Hero({ onRequestAccess }) {
   const navigate = useNavigate()
   const prefixRef = useRef(null)  // a_ as one unit
   const letterRefs = {
@@ -99,7 +99,7 @@ function Hero() {
             <span ref={letterRefs.O}>to </span>
             <span ref={letterRefs.R}>Intelligence</span></p>
           <div className="hero-button-wrapper">
-            <button className="hero-button" onClick={() => navigate('/request-access')}>
+            <button className="hero-button" onClick={() => onRequestAccess ? onRequestAccess() : console.error('No onRequestAccess prop provided to Hero!')}>
               Request Access
               <svg className="button-arrow" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 25" fill="none">
                 <rect width="32" height="28" transform="translate(0 0.5)" fill="white" fill-opacity="0.01" />

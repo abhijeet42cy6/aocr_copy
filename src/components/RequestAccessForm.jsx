@@ -1,87 +1,159 @@
-import React, { useState } from 'react';
-import Navbar from './Navbar';
+import React, { useState, useEffect } from 'react';
+import Navbar from './Navbar.jsx';
 const REQUEST_ACCESS_FORM_STYLES = `
+  /* Modal Overlay - Exact dimensions from aaction.in */
+  .request-form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+
   .request-access-form-container {
     min-height: 100vh;
     background: #202426;
     font-family: "Alliance No.2", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
-  .request-access-form-content {
-    display: flex;
-    max-width: 1260px;
-    margin: 0 auto;
-    padding: 54px 85px;
-    gap: 90px;
-    align-items: flex-start;
-  }
-
-  .form-section {
-    max-width: 675px;
-  }
-
-  .graphic-section {
-    flex: 1;
-    position: relative;
-    height: 540px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .request-access-form-header {
-    margin-bottom: 18px;
-    margin-top: 18px;
-  }
-
-  .request-access-form-title {
-    font-size: 2.25rem;
-    font-weight: 300;
-    color: rgba(244, 244, 227, 1);
-  }
-
-  .request-access-form {
+  /* Modal version with aaction.in dimensions */
+  .request-form-modal {
+    background: #1A1A1A;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 945px;
+    height: 87vh;
+    overflow: hidden;
+    box-shadow: 0 17px 34px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
-    gap: 27px;
+  }
+
+  .request-form-container {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+  }
+
+  .request-form-left-section {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: #1A1A1A;
+    overflow-y: auto;
+    width: 50%;
+  }
+
+  .request-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .request-form-title {
+    font-family: "Alliance No.2", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 27px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+  }
+
+  .request-form-close {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    font-size: 24px;
+  }
+
+  .request-form-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .request-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+  }
+
+  .request-form-right-section {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 50%;
+    background: #1A1A1A;
+  }
+
+  .request-form-abstract-graphics {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .request-form-abstract-graphics img {
+    /* Inline styles will override these */
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
   }
 
   .form-label {
-    font-size: 11px;
-    font-weight: 400;
-    color: rgba(244, 244, 227, 1);
-    font-family: "Source Code Pro", monospace;
+    font-family: "Alliance No.2", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #a8a8a8;
     text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    letter-spacing: 1px;
   }
 
-  .required-asterisk {
+  .required {
     color: #ff4444;
-    font-size: 0.8rem;
   }
 
   .form-input,
   .form-textarea {
     background: transparent;
     border: none;
-    border-bottom: 1px solid #666;
-    font-size: 11px;
-    font-family: "Alliance No.2", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    border-bottom: 1px solid #333;
+    padding: 10px 0;
     color: #fff;
-    transition: all 0.3s ease;
+    font-family: "Alliance No.2", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
     outline: none;
+    transition: border-color 0.2s;
   }
 
   .form-input:focus,
   .form-textarea:focus {
-    border-bottom-color: #999;
+    border-bottom-color: #84D04D;
+  }
+
+  .form-textarea {
+    resize: none;
+    height: 60px;
+    flex-shrink: 0;
   }
 
   .form-input:-webkit-autofill,
@@ -144,37 +216,34 @@ const REQUEST_ACCESS_FORM_STYLES = `
     border-color: #999;
   }
 
-  .submit-button {
+  .form-submit-button {
     background: #F4F4E3;
     color: #000;
     border: none;
-    padding: 12px 40px;
-    font-size: 16px;
+    padding: 12px 20px;
+    font-family: "Alliance No.2", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 11px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: "Alliance No.2";
+    margin-top: 10px;
     align-self: flex-start;
-    width: 180px;
     display: flex;
-    align-items: center;
+    width: 234px;
     justify-content: center;
-    gap: 8px;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
   }
 
-  .submit-button:hover {
-    background: #f0f0f0;
-    transform: translateY(-1px);
+  .form-submit-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
-  .submit-button:active {
-    transform: translateY(0);
-  }
-
-  .submit-button:disabled {
-    opacity: 0.7;
+  .form-submit-button:disabled {
+    opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
   }
 
   .submit-button.loading {
@@ -332,6 +401,34 @@ const REQUEST_ACCESS_FORM_STYLES = `
     }
   }
 
+  /* Close button for modal */
+  .modal-close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    font-size: 24px;
+    z-index: 10;
+  }
+
+  .modal-close-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Responsive Design - Exact from aaction.in */
+  @media (max-width: 1024px) {
+    .request-access-form-container.modal {
+      height: 90vh;
+      max-width: 95vw;
+    }
+  }
+
   @media (max-width: 768px) {
     .request-access-form-content {
       padding: 18px;
@@ -343,11 +440,131 @@ const REQUEST_ACCESS_FORM_STYLES = `
     }
     
     .graphic-section {
-display: none !important;    }
+      display: none !important;
+    }
+
+    .request-access-form-container.modal {
+      height: 95vh;
+      max-width: 98vw;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .request-form-overlay {
+      padding: 5px;
+    }
+    
+    .request-access-form-container.modal {
+      height: 98vh;
+      max-width: 100vw;
+    }
+  }
+
+  /* Responsive Design for Modal */
+  @media (max-width: 1024px) {
+    .request-form-modal {
+      height: 90vh;
+      max-width: 95vw;
+    }
+    
+    .request-form-right-section {
+      display: none; /* Hide graphics on tablet */
+    }
+    
+    .request-form-left-section {
+      flex: 1;
+      padding: 15px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .request-form-modal {
+      height: 95vh;
+      max-width: 98vw;
+    }
+    
+    .request-form-container {
+      flex-direction: column;
+    }
+    
+    .request-form-left-section {
+      padding: 12px;
+      flex: 1;
+    }
+    
+    .request-form-right-section {
+      display: none; /* Hide graphics on mobile */
+    }
+    
+    .request-form-title {
+      font-size: 18px;
+    }
+    
+    .request-form {
+      gap: 8px;
+    }
+    
+    .form-group {
+      gap: 3px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .request-form-overlay {
+      padding: 5px;
+    }
+    
+    .request-form-modal {
+      height: 98vh;
+      max-width: 100vw;
+    }
+    
+    .request-form-left-section {
+      padding: 10px;
+      flex: 1;
+    }
+    
+    .request-form-right-section {
+      display: none; /* Hide graphics on small mobile */
+    }
+    
+    .request-form-title {
+      font-size: 16px;
+    }
+    
+    .request-form {
+      gap: 6px;
+    }
+    
+    .form-group {
+      gap: 2px;
+    }
+    
+    .form-input,
+    .form-textarea {
+      padding: 8px 0;
+      font-size: 12px;
+    }
+    
+    .form-textarea {
+      height: 50px;
+    }
+    
+    .form-submit-button {
+      padding: 12px 20px;
+      font-size: 11px;
+      margin-top: 10px;
+      width: 234px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
   }
 `;
 
-export default function RequestAccessForm() {
+export default function RequestAccessForm({ isModal = false, onClose = null, onRequestAccess = null }) {
+  console.log('RequestAccessForm rendered - isModal:', isModal, 'onClose:', onClose);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -358,6 +575,25 @@ export default function RequestAccessForm() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Handle escape key and body scroll for modal
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isModal && onClose) {
+        onClose();
+      }
+    };
+
+    if (isModal) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isModal, onClose]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -416,6 +652,13 @@ export default function RequestAccessForm() {
         projectContext: ''
       });
 
+      // Close modal after successful submission
+      if (isModal && onClose) {
+        setTimeout(() => {
+          onClose();
+        }, 1000);
+      }
+
     } catch (error) {
       console.error('Submission error:', error);
     } finally {
@@ -423,21 +666,32 @@ export default function RequestAccessForm() {
     }
   };
 
-  return (
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget && isModal && onClose) {
+      onClose();
+    }
+  };
 
-    <div className="request-access-form-container">
-      <style>{REQUEST_ACCESS_FORM_STYLES}</style>
+  // Modal version
+  if (isModal) {
+    return (
+      <div className="request-form-overlay" onClick={handleOverlayClick}>
+        <div className="request-form-modal">
+          <style>{REQUEST_ACCESS_FORM_STYLES}</style>
+          
+          <div className="request-form-container">
+            {/* Left Section - Form */}
+            <div className="request-form-left-section">
+              <div className="request-form-header">
+                <h1 className="request-form-title">Request Access</h1>
+                {onClose && (
+                  <button className="request-form-close" onClick={onClose}>
+                    ×
+                  </button>
+                )}
+              </div>
 
-      <Navbar />
-
-      <div className="request-access-form-content">
-        {/* Left Section - Form */}
-        <div className="form-section">
-          <div className="request-access-form-header">
-            <h1 className="request-access-form-title">Request Access</h1>
-          </div>
-
-          <form className="request-access-form" onSubmit={handleSubmit}>
+              <form className="request-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label className="form-label">
                 FULL NAME: <span className="required-asterisk">*</span>
@@ -531,7 +785,7 @@ export default function RequestAccessForm() {
 
             <button
               type="submit"
-              className={`submit-button ${isSubmitting ? 'loading' : ''}`}
+              className={`form-submit-button ${isSubmitting ? 'loading' : ''}`}
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Submitting...' : 'Submit'}
@@ -539,9 +793,9 @@ export default function RequestAccessForm() {
           </form>
         </div>
 
-        {/* Right Section - Abstract Graphic */}
-        <div className="graphic-section">
-          <div className="abstractGraphics">
+            {/* Right Section - Abstract Graphics */}
+            <div className="request-form-right-section">
+              <div className="request-form-abstract-graphics">
 
             {/* Top Layer - using CSS class instead of inline style */}
             <div className="layer">
@@ -750,6 +1004,16 @@ export default function RequestAccessForm() {
           </div>
         </div>
       </div>
-    </div>
-  );
+        </div>
+      </div>
+    );
+  }
+
+  // Only render when it's a modal
+  if (!isModal) {
+    return null;
+  }
+
+  // This should never be reached since we return null above
+  return null;
 }

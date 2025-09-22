@@ -22,6 +22,18 @@ import { initializeLenisScroll } from './utils/smoothScroll.js'
 function App() {
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    console.log('handleOpenModal called, setting modal to true');
+    setIsModalOpen(true);
+  };
+
+  console.log('App component rendered, handleOpenModal:', handleOpenModal);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     // Initialize Lenis smooth scroll for professional-grade smoothness
@@ -75,8 +87,8 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <Navbar />
-              <Hero />
+              <Navbar onRequestAccess={handleOpenModal} />
+              <Hero onRequestAccess={handleOpenModal} />
               <Opening />
               <IntelligenceLayer />
               <SolutionsByIndustry />
@@ -85,11 +97,15 @@ function App() {
               <AnimatedFAQDiagram />
               {window.innerWidth < 768 && <FAQ />}
               <Chatbot />
-              <RequestAccess />
+              <RequestAccess onRequestAccess={handleOpenModal} />
               <Footer />
+              <RequestAccessForm 
+                isModal={isModalOpen} 
+                onClose={handleCloseModal}
+                onRequestAccess={handleOpenModal}
+              />
             </>
           } />
-          <Route path="/request-access" element={<RequestAccessForm />} />
         </Routes>
       </Router>
     )

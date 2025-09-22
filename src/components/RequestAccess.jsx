@@ -2,12 +2,16 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './RequestAccess.css';
 
-const RequestAccess = () => {
+const RequestAccess = ({ onRequestAccess }) => {
 
     const navigate = useNavigate();
 
     const handleRequestAccess = () => {
-        navigate('/request-access');
+        if (onRequestAccess) {
+            onRequestAccess();
+        } else {
+            console.error('No onRequestAccess prop provided to RequestAccess!');
+        }
     };
 
     return (
